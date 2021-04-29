@@ -36,3 +36,20 @@ resource "aws_s3_bucket" "my-bucket" {
   acl    = "public-read-write"
   bucket = "my-bucket"
 }
+
+resource "aws_sns_topic" "my-sns" {
+  name = "my-sns"
+}
+
+resource "aws_sqs_queue" "my-queue" {
+  name                      = "my-queue"
+  max_message_size          = 2048
+  message_retention_seconds = 86400 # 1 day
+  receive_wait_time_seconds = 10
+}
+
+resource "aws_sns_topic_subscription" "user_updates_sqs_target" {
+  topic_arn = aws_sns_topic.my-sns.arn
+  protocol  = "sqs"
+  endpoint  = aws_sqs_queue.my-queue.arn
+}

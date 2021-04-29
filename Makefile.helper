@@ -22,5 +22,5 @@ HELP_FUN = \
 		}; \
 	print "\n"; }
 
-help: ##@other Show this help
+help: ## Show this help
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
